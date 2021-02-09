@@ -1,0 +1,11 @@
+FROM localhost:32000/nakama:dkozlov
+
+WORKDIR /nakama/
+COPY nakama-plugin-challenge-league.so /nakama/data/modules/challenge-league
+COPY nakama /nakama/
+EXPOSE 7349 7350 7351
+
+ENTRYPOINT ["tini", "--", "/nakama/nakama"]
+
+HEALTHCHECK --interval=5m --timeout=10s \
+  CMD curl -f http://localhost:7350/ || exit 1
